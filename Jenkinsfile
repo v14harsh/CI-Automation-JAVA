@@ -22,34 +22,34 @@ pipeline{
 	stages {
 		stage('checkout') {
 		    steps {
-			echo '1. checkout in ${BRANCH_NAME} branch'
-			checkout scm
+				echo '1. checkout in ${BRANCH_NAME} branch'
+				checkout scm
 		    }
 		}
 		stage('Build') {
 		    steps {
-			echo '2. Build in ${BRANCH_NAME} branch'
-			sh 'mvn install'
+				echo '2. Build in ${BRANCH_NAME} branch'
+				bat 'mvn install'
 		    }
 		}
 		stage('Unit Testing') {
 		    when {
-			branch 'master' 
+				branch 'master' 
 		    }
 		    steps {
-					echo "3. JUnit test cases in master"
-					bat "mvn test"
-				}
+				echo "3. JUnit test cases in master"
+				bat "mvn test"
+			}
 		}
 		stage('Sonar Analysis') {
 		    when {
-			branch 'develop' 
+				branch 'develop' 
 		    }
 		    steps {
-			withSonarQubeEnv('Test_Sonar') {
-						echo "4. Sonar scanner in master branch"
-						bat "mvn sonar:sonar"
-					}
+				withSonarQubeEnv('Test_Sonar') {
+					echo "4. Sonar scanner in master branch"
+					bat "mvn sonar:sonar"
+				}
 		    }
 		}
 	}
